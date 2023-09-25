@@ -1,7 +1,7 @@
 class UserModel {
-  String user_id;
-  String user_name;
-  String password;
+  String? user_id;
+  String? user_name;
+  String? password;
 
   UserModel(user_id, user_name, password);
 

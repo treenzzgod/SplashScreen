@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: must_be_immutable
 
-import 'comHelper.dart';
+import 'package:flutter/material.dart';
 
 class getTextFormField extends StatelessWidget {
   TextEditingController controller;
@@ -11,9 +11,9 @@ class getTextFormField extends StatelessWidget {
   bool isEnable;
 
   getTextFormField(
-      {this.controller,
-      this.hintName,
-      this.icon,
+      {required this.controller,
+      required this.hintName,
+      required this.icon,
       this.isObscureText = false,
       this.inputType = TextInputType.text,
       this.isEnable = true});
@@ -31,9 +31,9 @@ class getTextFormField extends StatelessWidget {
           if (value == null || value.isEmpty) {
             return 'Please enter $hintName';
           }
-          if (hintName == "Email" && !validateEmail(value)) {
-            return 'Please Enter Valid Email';
-          }
+          // if (hintName == "Email" && !validateEmail(value)) {
+          //   return 'Please Enter Valid Email';
+          // }
           return null;
         },
         decoration: InputDecoration(

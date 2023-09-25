@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:splashscreen/Comm/comHelper.dart';
 import 'package:splashscreen/Comm/genTextFormField.dart';
 import 'package:splashscreen/db/DbloginHelper.dart';
 import 'package:splashscreen/models/UserModel.dart';
@@ -7,7 +6,7 @@ import 'package:splashscreen/pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Setting extends StatefulWidget {
-  const Setting({Key key}) : super(key: key);
+  const Setting({Key? key}) : super(key: key);
 
   @override
   _SettingState createState() => _SettingState();
@@ -17,7 +16,7 @@ class _SettingState extends State<Setting> {
   final _formKey = GlobalKey<FormState>();
   final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
 
-  DbHelper dbHelper;
+  DbHelper? dbHelper;
   final _conUserId = TextEditingController();
   final _conDelUserId = TextEditingController();
   final _conUserName = TextEditingController();
@@ -35,10 +34,10 @@ class _SettingState extends State<Setting> {
     final SharedPreferences sp = await _pref;
 
     setState(() {
-      _conUserId.text = sp.getString("user_id");
-      _conDelUserId.text = sp.getString("user_id");
-      _conUserName.text = sp.getString("user_name");
-      _conPassword.text = sp.getString("password");
+      _conUserId.text = sp.getString("user_id")!;
+      _conDelUserId.text = sp.getString("user_id")!;
+      _conUserName.text = sp.getString("user_name")!;
+      _conPassword.text = sp.getString("password")!;
     });
   }
 
@@ -47,13 +46,18 @@ class _SettingState extends State<Setting> {
     String uname = _conUserName.text;
     String passwd = _conPassword.text;
 
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
 
       UserModel user = UserModel(uid, uname, passwd);
-      await dbHelper.updateUser(user).then((value) {
+      await dbHelper!.updateUser(user).then((value) {
         if (value == 1) {
-          alertDialog(context, "Successfully Updated");
+          AlertDialog(
+            title: Text(
+              "Successfully Updated",
+            ),
+          );
+          // alertDialog(context, "Successfully Updated");
 
           updateSP(user, true).whenComplete(() {
             Navigator.pushAndRemoveUntil(
@@ -62,11 +66,21 @@ class _SettingState extends State<Setting> {
                 (Route<dynamic> route) => false);
           });
         } else {
-          alertDialog(context, "Error Update");
+          AlertDialog(
+            title: Text(
+              "Error Update",
+            ),
+          );
+          // alertDialog(context, "Error Update");
         }
       }).catchError((error) {
         print(error);
-        alertDialog(context, "Error");
+        AlertDialog(
+            title: Text(
+              "Error",
+            ),
+          );
+        // alertDialog(context, "Error");
       });
     }
   }
@@ -74,9 +88,14 @@ class _SettingState extends State<Setting> {
   delete() async {
     String delUserID = _conDelUserId.text;
 
-    await dbHelper.deleteUser(delUserID).then((value) {
+    await dbHelper!.deleteUser(delUserID).then((value) {
       if (value == 1) {
-        alertDialog(context, "Successfully Deleted");
+         AlertDialog(
+            title: Text(
+              "Successfully Deleted",
+            ),
+          );
+        // alertDialog(context, "Successfully Deleted");
 
         updateSP(UserModel(delUserID, "", ""), false).whenComplete(() {
           Navigator.pushAndRemoveUntil(
@@ -92,8 +111,8 @@ class _SettingState extends State<Setting> {
     final SharedPreferences sp = await _pref;
 
     if (add) {
-      sp.setString("user_name", user.user_name);
-      sp.setString("password", user.password);
+      sp.setString("user_name", user.user_name!);
+      sp.setString("password", user.password!);
     } else {
       sp.remove('user_id');
       sp.remove('user_name');
@@ -159,7 +178,7 @@ class _SettingState extends State<Setting> {
                   Container(
                     margin: EdgeInsets.all(30.0),
                     width: double.infinity,
-                    child: FlatButton(
+                    child: ElevatedButton(
                       child: Text(
                         'Delete',
                         style: TextStyle(color: Colors.white),

@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 import 'dart:io' as io;
 
 class DbHelper {
-  static Database _db;
+  static Database? _db;
 
   static const String DB_Name = 'test.db';
   static const String Table_User = 'user';
@@ -15,7 +15,7 @@ class DbHelper {
   static const String C_UserName = 'user_name';
   static const String C_Password = 'password';
 
-  Future<Database> get db async {
+  Future<Database?> get db async {
     if (_db != null) {
       return _db;
     }
@@ -39,15 +39,15 @@ class DbHelper {
         ")");
   }
 
-  Future<int> saveData(UserModel user) async {
+  Future<int?> saveData(UserModel user) async {
     var dbClient = await db;
     var res = await dbClient?.insert(Table_User, user.toMap());
     return res;
   }
 
-  Future<UserModel> getLoginUser(String userId, String password) async {
+  Future<UserModel?> getLoginUser(String userId, String password) async {
     var dbClient = await db;
-    var res = await dbClient.rawQuery("SELECT * FROM $Table_User WHERE "
+    var res = await dbClient!.rawQuery("SELECT * FROM $Table_User WHERE "
         "$C_UserID = '$userId' AND "
         "$C_Password = '$password'");
 
@@ -60,14 +60,14 @@ class DbHelper {
 
   Future<int> updateUser(UserModel user) async {
     var dbClient = await db;
-    var res = await dbClient.update(Table_User, user.toMap(),
+    var res = await dbClient!.update(Table_User, user.toMap(),
         where: '$C_UserID = ?', whereArgs: [user.user_id]);
     return res;
   }
 
   Future<int> deleteUser(String user_id) async {
     var dbClient = await db;
-    var res = await dbClient
+    var res = await dbClient!
         .delete(Table_User, where: '$C_UserID = ?', whereArgs: [user_id]);
     return res;
   }

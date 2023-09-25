@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:splashscreen/Comm/comHelper.dart';
 import 'package:splashscreen/Comm/genLoginSignupHeader.dart';
 import 'package:splashscreen/Comm/genTextFormField.dart';
 import 'package:splashscreen/db/DbloginHelper.dart';
@@ -32,22 +31,39 @@ class _SignupFormState extends State<SignupForm> {
     String passwd = _conPassword.text;
     String cpasswd = _conCPassword.text;
 
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       if (passwd != cpasswd) {
-        alertDialog(context, 'Password Mismatch');
+        AlertDialog(
+          title: Text(
+            'Password not match!',
+          ),
+        );
       } else {
-        _formKey.currentState.save();
+        _formKey.currentState!.save();
 
         UserModel uModel = UserModel(uid, uname, passwd);
         await dbHelper.saveData(uModel).then((userData) {
-          alertDialog(context,
-              "Successfully Saved, your id is $uid and password is $passwd");
+          AlertDialog(
+            title: Text(
+              'Successfully Saved, your id is $uid and password is $passwd',
+            ),
+          );
+          // alertDialog(context,
+          //     "Successfully Saved, your id is $uid and password is $passwd");
 
           Navigator.push(
               context, MaterialPageRoute(builder: (_) => LoginForm()));
         }).catchError((error) {
           print(error);
-          alertDialog(context, "Error: Data Save Fail");
+          AlertDialog(
+            title: Text(
+              "Error: Data Save Fail",
+            ),
+          );
+          // alertDialog(
+          //   context,
+          //   "Error: Data Save Fail",
+          // );
         });
       }
     }

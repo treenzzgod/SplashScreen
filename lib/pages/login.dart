@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:splashscreen/Comm/comHelper.dart';
 import 'package:splashscreen/Comm/genLoginSignupHeader.dart';
 import 'package:splashscreen/Comm/genTextFormField.dart';
 import 'package:splashscreen/db/dbloginHelper.dart';
 import 'package:splashscreen/models/UserModel.dart';
 import 'package:splashscreen/pages/SignupForm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splashscreen/pages/home.dart';
 import 'package:splashscreen/pages/pengaturan.dart';
 
 class LoginForm extends StatefulWidget {
@@ -15,7 +15,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   Future<SharedPreferences> _pref = SharedPreferences.getInstance();
-  final _formKey = new GlobalKey<FormState>();
+  // final _formKey = new GlobalKey<FormState>();
   final _conUsernm = TextEditingController();
   final _conUserId = TextEditingController();
   final _conPassword = TextEditingController();
@@ -29,32 +29,47 @@ class _LoginFormState extends State<LoginForm> {
 
   login() async {
     String uid = _conUserId.text;
-    String uname = _conUsernm.text;
+    // String uname = _conUsernm.text;
     String passwd = _conPassword.text;
 
     if (uid.isEmpty) {
-      alertDialog(context, "Please Enter User ID");
+      AlertDialog(
+        title: Text(
+          "Please Enter User ID",
+        ),
+      );
+      // alertDialog(context, "Please Enter User ID");
     } else if (passwd.isEmpty) {
-      alertDialog(context, "Please Enter Password");
+      AlertDialog(
+        title: Text(
+          "Please Enter Password",
+        ),
+      );
+      // alertDialog(context, "Please Enter Password");
     } else {
       await dbHelper.getLoginUser(uid, passwd).then((userData) {
         if (userData != null) {
           setSP(userData).whenComplete(() {
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (_) => Setting()),
+                MaterialPageRoute(builder: (_) => Home()),
                 (Route<dynamic> route) => true);
           });
         } else {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (_) => Setting(),
+                builder: (_) => Home(),
               ));
         }
       }).catchError((error) {
         print(error);
-        alertDialog(context, "Error: Login Fail");
+        AlertDialog(
+          title: Text(
+            "Login Fail",
+          ),
+        );
+        // alertDialog(context, "Error: Login Fail");
       });
     }
   }
@@ -62,9 +77,9 @@ class _LoginFormState extends State<LoginForm> {
   Future setSP(UserModel user) async {
     final SharedPreferences sp = await _pref;
 
-    sp.setString("user_id", user.user_id);
-    sp.setString("user_name", user.user_name);
-    sp.setString("password", user.password);
+    sp.setString("user_id", user.user_id!);
+    sp.setString("user_name", user.user_name!);
+    sp.setString("password", user.password!);
   }
 
   @override

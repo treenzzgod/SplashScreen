@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,10 +38,15 @@ dependencies:
   path_provider: ^2.0.9
   http: ^0.13.4
   path: ^1.8.0
-  toast: ^0.1.5
+  calendar_date_picker2: ^0.5.2
+  # toast: ^0.1.5
   shared_preferences:
-  syncfusion_flutter_charts: ^23.1.36
-  intl : ^0.17.0
+  flutter_localizations:
+    sdk: flutter
+  syncfusion_flutter_datepicker: ^23.1.36
+  intl: ^0.18.1
+  # syncfusion_flutter_charts: ^23.1.36
+  # intl : ^0.17.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
